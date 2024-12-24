@@ -2267,12 +2267,31 @@
 			opacity: 1;
 		}
 	</style>
+	        <style>
+				.mute-button {
+				  background: none;
+				  border: none;
+				  cursor: pointer;
+				  font-size: 24px;
+				}
+			
+				.mute-button:focus {
+				  outline: none;
+				}
+					</style>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<script src="js/wp-emoji-release.min.js" defer=""></script>
 </head>
 
 <body
 	class="home page-template page-template-elementor_canvas page page-id-8 wp-custom-logo wp-embed-responsive ehf-template-twentytwentyfour ehf-stylesheet-twentytwentyfour jkit-color-scheme elementor-default elementor-template-canvas elementor-kit-5 elementor-page elementor-page-8">
+	<div class="music-control">
+		<audio id="backgroundMusic" loop>
+		 <source src="0ll.mp3" type="audio/mpeg">
+		 Your browser does not support the audio element.
+	   </audio>
+	 </div>
+   
 	<div data-elementor-type="wp-page" data-elementor-id="8" class="elementor elementor-8">
 		<section
 			class="elementor-section elementor-top-section elementor-element elementor-element-f29a54a elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
@@ -2299,7 +2318,16 @@
 						<div class="elementor-element elementor-element-84a62af e-grid-align-right e-grid-align-mobile-center elementor-shape-rounded elementor-grid-0 elementor-widget elementor-widget-social-icons"
 							data-id="84a62af" data-element_type="widget" data-widget_type="social-icons.default">
 							<div class="elementor-widget-container">
-								<div class="elementor-social-icons-wrapper elementor-grid">
+								<div class="elementor-social-icons-wrapper elementor-grid" style="    align-items: center;
+								display: flex
+							;
+								justify-content: center;
+							">
+									<span class="elementor-grid-item">
+										
+											<button class="elementor-icon elementor-social-icon elementor-social-icon-telegram-plane elementor-animation-grow elementor-repeater-item-11f4b7a mute-button" id="muteButton" >🔊</button>
+										
+									</span>
 									<span class="elementor-grid-item">
 										<a class="elementor-icon elementor-social-icon elementor-social-icon-telegram-plane elementor-animation-grow elementor-repeater-item-11f4b7a"
 											href="tglink" target="_blank" rel="nofollow">
@@ -3092,7 +3120,42 @@
 	<script src="js/modal-popups.min.js" id="wpr-modal-popups-js-js"></script>
 
 
-
+	<script>
+		const audio = document.getElementById('backgroundMusic');
+		const muteButton = document.getElementById('muteButton');
+	  
+		// Function to update button icon based on audio state
+		const updateButtonIcon = () => {
+		  muteButton.textContent = audio.muted || audio.paused ? '🔇' : '🔊';
+		};
+	  
+		// Toggle mute state and update button icon
+		muteButton.addEventListener('click', () => {
+		  if (audio.paused) {
+			audio.play().then(() => {
+			  audio.muted = false;
+			  updateButtonIcon();
+			}).catch(err => console.error('Audio play failed:', err));
+		  } else {
+			audio.muted = !audio.muted;
+			updateButtonIcon();
+		  }
+		});
+	  
+		// Start playing audio when user interacts with the page
+		const enableAudioOnInteraction = () => {
+		  audio.play().then(() => {
+			updateButtonIcon();
+		  }).catch(err => console.warn('Audio auto-play blocked:', err));
+		  document.removeEventListener('click', enableAudioOnInteraction);
+		};
+	  
+		// Listen for the first user interaction
+		document.addEventListener('click', enableAudioOnInteraction);
+	  
+		// Initialize button icon on load
+		updateButtonIcon();
+	  </script>
 
 </body>
 
