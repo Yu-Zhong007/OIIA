@@ -2267,25 +2267,81 @@
 			opacity: 1;
 		}
 	</style>
-	        <style>
-				.mute-button {
-				  background: none;
-				  border: none;
-				  cursor: pointer;
-				  font-size: 24px;
-				}
-			
-				.mute-button:focus {
-				  outline: none;
-				}
-		</style>
+	<style>
+		.mute-button {
+			background: none;
+			border: none;
+			cursor: pointer;
+			font-size: 24px;
+		}
+
+		.mute-button:focus {
+			outline: none;
+		}
+
+		.modal {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.7);
+			color: #fff;
+			font-size: 20px;
+			z-index: 10;
+			visibility: visible;
+			opacity: 1;
+			transition: visibility 0s, opacity 0.3s;
+		}
+
+		.modal.hidden {
+			visibility: hidden;
+			opacity: 0;
+		}
+
+		.modal-content {
+			background-color: #8eff24;
+			padding: 20px;
+			border-radius: 8px;
+			text-align: center;
+		}
+
+		.modal-button {
+			background-color: #4caf50;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+		.modal-button:hover {
+			background-color: #45a049;
+		}
+	</style>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<script src="js/wp-emoji-release.min.js" defer=""></script>
 </head>
 
 <body
 	class="home page-template page-template-elementor_canvas page page-id-8 wp-custom-logo wp-embed-responsive ehf-template-twentytwentyfour ehf-stylesheet-twentytwentyfour jkit-color-scheme elementor-default elementor-template-canvas elementor-kit-5 elementor-page elementor-page-8">
-	
+
+	<div id="modal" class="modal" >
+		<div class="modal-content">
+			<img decoding="async" width="1024" height="920" src="1.jpg"
+									class="attachment-large size-large wp-image-24" alt=""
+									sizes="(max-width: 1024px) 100vw, 1024px" style="border-radius: 50%;max-width: 200px;margin: auto;">
+			<img decoding="async" width="1024" height="920" src="2.png"
+									class="attachment-large size-large wp-image-24" alt=""
+									sizes="(max-width: 1024px) 100vw, 1024px" style="border-radius: 50%;max-width: 200px; margin: 2rem;">
+									
+		  <button id="continueButton" class="modal-button" style='font-family: "duck1", Sans-serif;'>MAKE A VIBE</button>
+		</div>
+	  </div>
 	<div data-elementor-type="wp-page" data-elementor-id="8" class="elementor elementor-8">
 
 		<section
@@ -2318,19 +2374,23 @@
 							;
 								justify-content: center;
 							">
-									 <span class="elementor-grid-item">
+									<span class="elementor-grid-item">
 
-									  <audio id="backgroundMusic" autoplay loop>
-										<source src="/oll.mp3" type="audio/mpeg">
-										Your browser does not support the audio element.
-									  </audio>
-									
-										
-											<button class="elementor-icon elementor-social-icon elementor-social-icon-telegram-plane elementor-animation-grow elementor-repeater-item-11f4b7a mute-button" id="muteButton" >🔊</button>
+										<audio id="backgroundMusic" autoplay loop>
+											<source src="/oll.mp3" type="audio/mpeg">
+											Your browser does not support the audio element.
+										</audio>
+
+
+										<button
+											class="elementor-icon elementor-social-icon elementor-social-icon-telegram-plane elementor-animation-grow elementor-repeater-item-11f4b7a mute-button"
+											id="muteButton">🔊</button>
 									</span>
 									<script>
 										const audio = document.getElementById('backgroundMusic');
 										const muteButton = document.getElementById('muteButton');
+										const modal = document.getElementById('modal');
+										const continueButton = document.getElementById('continueButton');
 									
 										// Function to update button icon based on audio state
 										const updateButtonIcon = () => {
@@ -2350,21 +2410,18 @@
 										  }
 										});
 									
-										// Start playing audio when user interacts with the page
-										const enableAudioOnInteraction = () => {
+										// Start playing audio when "Continue" button is clicked
+										continueButton.addEventListener('click', () => {
 										  audio.play().then(() => {
+											modal.classList.add('hidden');
 											updateButtonIcon();
-										  }).catch(err => console.warn('Audio auto-play blocked:', err));
-										  document.removeEventListener('click', enableAudioOnInteraction);
-										};
-									
-										// Listen for the first user interaction
-										document.addEventListener('click', enableAudioOnInteraction);
+										  }).catch(err => console.warn('Audio play failed:', err));
+										});
 									
 										// Initialize button icon on load
 										updateButtonIcon();
 									  </script>
-									
+
 									<span class="elementor-grid-item">
 										<a class="elementor-icon elementor-social-icon elementor-social-icon-telegram-plane elementor-animation-grow elementor-repeater-item-11f4b7a"
 											href="tglink" target="_blank" rel="nofollow">
@@ -2396,8 +2453,7 @@
 									</span>
 									<span class="elementor-grid-item">
 										<a class="elementor-icon elementor-social-icon elementor-social-icon- elementor-animation-grow elementor-repeater-item-35dc4ae"
-											href="chartlink"
-											target="_blank" rel="nofollow">
+											href="chartlink" target="_blank" rel="nofollow">
 											<span class="elementor-screen-only"></span>
 											<svg xmlns="http://www.w3.org/2000/svg"
 												xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" x="0px" y="0px"
@@ -2461,8 +2517,7 @@
 							<div class="elementor-widget-container">
 								<div class="elementor-button-wrapper">
 									<a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow"
-										href="buylink"
-										target="_blank" rel="nofollow">
+										href="buylink" target="_blank" rel="nofollow">
 										<span class="elementor-button-content-wrapper">
 											<span class="elementor-button-text">BUY $ETHEL</span>
 										</span>
@@ -2537,7 +2592,13 @@
 						<div class="elementor-element elementor-element-1cd98a4 elementor-widget elementor-widget-heading"
 							data-id="1cd98a4" data-element_type="widget" data-widget_type="heading.default">
 							<div class="elementor-widget-container">
-								<h2 class="elementor-heading-title elementor-size-default">Oiia Cat is a TikTok sensation known for its iconic spinning videos and calm, unbothered expression. Whether twirling on chairs or turntables, the cat’s hypnotic spins, paired with catchy audio, have captivated millions and inspired countless remixes, parodies, and memes. Fans love Oiia’s zen-like vibe, making it a symbol of calm amidst chaos. With its viral appeal and endless creativity from fans, Oiia Cat has earned its place as one of TikTok’s most beloved pets.
+								<h2 class="elementor-heading-title elementor-size-default">Oiia Cat is a TikTok
+									sensation known for its iconic spinning videos and calm, unbothered expression.
+									Whether twirling on chairs or turntables, the cat’s hypnotic spins, paired with
+									catchy audio, have captivated millions and inspired countless remixes, parodies, and
+									memes. Fans love Oiia’s zen-like vibe, making it a symbol of calm amidst chaos. With
+									its viral appeal and endless creativity from fans, Oiia Cat has earned its place as
+									one of TikTok’s most beloved pets.
 								</h2>
 							</div>
 						</div>
@@ -2639,9 +2700,11 @@
 						<div class="elementor-element elementor-element-e7c213e elementor-widget elementor-widget-image"
 							data-id="e7c213e" data-element_type="widget" data-widget_type="image.default">
 							<div class="elementor-widget-container">
-								
 
-																<img decoding="async" width="827" height="1024" src="3.gif" class="attachment-large size-large wp-image-33" alt=""  sizes="(max-width: 827px) 100vw, 827px">
+
+								<img decoding="async" width="827" height="1024" src="3.gif"
+									class="attachment-large size-large wp-image-33" alt=""
+									sizes="(max-width: 827px) 100vw, 827px">
 							</div>
 						</div>
 					</div>
@@ -2687,8 +2750,7 @@
 										border: 0;
 									}
 								</style>
-								<div id="dexscreener-embed"><iframe
-										src="dxlink"></iframe>
+								<div id="dexscreener-embed"><iframe src="dxlink"></iframe>
 								</div>
 							</div>
 						</div>
@@ -2746,15 +2808,20 @@
 						<div class="elementor-element elementor-element-13051a8 elementor-widget elementor-widget-heading"
 							data-id="13051a8" data-element_type="widget" data-widget_type="heading.default">
 							<div class="elementor-widget-container">
-								<h2 class="elementor-heading-title elementor-size-default">Oiia Cat is a A memecoin for the people
-<br><br>
-									Oiia Cat has now spun its way onto Ethereum as its very own coin, bringing its signature chill vibes to the blockchain.
-<br><br>
-									
-									Embracing the lighthearted energy that made it a viral sensation, the Oiia Cat coin adds a playful twist to the crypto world.
-<br><br>
-									
-									Just like its iconic spins, the coin represents movement, fun, and community, uniting fans who love the quirky spirit of Oiia Cat.</h2>
+								<h2 class="elementor-heading-title elementor-size-default">Oiia Cat is a A memecoin for
+									the people
+									<br><br>
+									Oiia Cat has now spun its way onto Ethereum as its very own coin, bringing its
+									signature chill vibes to the blockchain.
+									<br><br>
+
+									Embracing the lighthearted energy that made it a viral sensation, the Oiia Cat coin
+									adds a playful twist to the crypto world.
+									<br><br>
+
+									Just like its iconic spins, the coin represents movement, fun, and community,
+									uniting fans who love the quirky spirit of Oiia Cat.
+								</h2>
 							</div>
 						</div>
 						<div class="elementor-element elementor-element-b491c00 elementor-widget elementor-widget-heading"
@@ -2768,8 +2835,7 @@
 							<div class="elementor-widget-container">
 								<div class="elementor-button-wrapper">
 									<a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow"
-										href="buylink"
-										target="_blank" rel="nofollow">
+										href="buylink" target="_blank" rel="nofollow">
 										<span class="elementor-button-content-wrapper">
 											<span class="elementor-button-text">APE $ETHEL NOW</span>
 										</span>
@@ -2785,8 +2851,8 @@
 						<div class="elementor-element elementor-element-b6018de elementor-widget elementor-widget-image"
 							data-id="b6018de" data-element_type="widget" data-widget_type="image.default">
 							<div class="elementor-widget-container">
-								<img loading="lazy" decoding="async" width="1024" height="1024" src="1.jpg" style="border-radius: 50%;"
-									class="attachment-large size-large wp-image-56" alt=""
+								<img loading="lazy" decoding="async" width="1024" height="1024" src="1.jpg"
+									style="border-radius: 50%;" class="attachment-large size-large wp-image-56" alt=""
 									sizes="(max-width: 1024px) 100vw, 1024px">
 							</div>
 						</div>
